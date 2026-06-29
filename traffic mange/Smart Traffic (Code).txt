@@ -1,0 +1,141 @@
+int sens1 =2,sens2 =3,sens3=4,sens4 =5,sens5 =6,sens6 =7;
+int r1=24,y1=23,g1=22,r2=27,y2=26,g2=25;   
+int sd1,sd2,sd3,sd4,sd5,sd6;
+
+void setup() {
+  Serial.begin(9600);  // ✅ Serial Monitor
+  pinMode(sens1,INPUT);
+  pinMode(sens2,INPUT);
+  pinMode(sens3,INPUT);
+  pinMode(sens4,INPUT);
+  pinMode(sens5,INPUT);
+  pinMode(sens6,INPUT);
+  pinMode(r1,OUTPUT);
+  pinMode(y1,OUTPUT);
+  pinMode(g1,OUTPUT);
+  pinMode(r2,OUTPUT);
+  pinMode(y2,OUTPUT);
+  pinMode(g2,OUTPUT);
+  
+  digitalWrite(r1,HIGH);
+  digitalWrite(r2,HIGH);
+
+  Serial.println("🚦 Traffic Light System Started");
+  Serial.println("-----------------------------------");
+}
+
+void loop() {
+  sd1= digitalRead(sens1);
+  sd2= digitalRead(sens2);
+  sd3= digitalRead(sens3);
+  sd4= digitalRead(sens4);
+  sd5= digitalRead(sens5);
+  sd6= digitalRead(sens6);
+
+  // ✅ Count number of sensors detecting (LOW = detected)
+  int countLane1 = (sd1==0) + (sd2==0) + (sd3==0);
+  int countLane2 = (sd4==0) + (sd5==0) + (sd6==0);
+
+  // ✅ Print sensor readings
+  Serial.println("-----------------------------------");
+  Serial.print("Lane 1 sensors: ");
+  Serial.print(countLane1);
+  Serial.println(" detected");
+  Serial.print("Lane 2 sensors: ");
+  Serial.print(countLane2);
+  Serial.println(" detected");
+  Serial.println("-----------------------------------");
+
+  if((sd1==0&&sd2&&sd3)||(sd4==0&&sd5&&sd6)) {
+    if(sd1==0){
+      Serial.println("→ Lane 1: Green ON for 28 seconds");
+      digitalWrite(r1,LOW);
+      digitalWrite(r2,HIGH);
+      digitalWrite(g1,HIGH);
+      delay(28000);
+      digitalWrite(g1,LOW);
+      Serial.println("→ Lane 1: Yellow ON for 2 seconds");
+      digitalWrite(y1,HIGH);
+      delay(2000);
+      digitalWrite(y1,LOW);
+      digitalWrite(r1,HIGH);
+      Serial.println("→ Lane 1: Red ON");
+    }
+    if(sd4==0){
+      Serial.println("→ Lane 2: Green ON for 28 seconds");
+      digitalWrite(r2,LOW);
+      digitalWrite(r1,HIGH);
+      digitalWrite(g2,HIGH);
+      delay(28000);
+      digitalWrite(g2,LOW);
+      Serial.println("→ Lane 2: Yellow ON for 2 seconds");
+      digitalWrite(y2,HIGH);
+      delay(2000);
+      digitalWrite(y2,LOW);
+      digitalWrite(r2,HIGH);
+      Serial.println("→ Lane 2: Red ON");
+    }
+  }
+  else if((sd1==0&&sd2==0&&sd3)||(sd4==0&&sd5==0&&sd6)) {
+    if(sd1==0&&sd2==0){
+      Serial.println("→ Lane 1: Green ON for 58 seconds");
+      digitalWrite(r1,LOW);
+      digitalWrite(r2,HIGH);
+      digitalWrite(g1,HIGH);
+      delay(58000);
+      digitalWrite(g1,LOW);
+      Serial.println("→ Lane 1: Yellow ON for 2 seconds");
+      digitalWrite(y1,HIGH);
+      delay(2000);
+      digitalWrite(y1,LOW);
+      digitalWrite(r1,HIGH);
+      Serial.println("→ Lane 1: Red ON");
+    }
+    if(sd4==0&&sd5==0){
+      Serial.println("→ Lane 2: Green ON for 58 seconds");
+      digitalWrite(r2,LOW);
+      digitalWrite(r1,HIGH);
+      digitalWrite(g2,HIGH);
+      delay(58000);
+      digitalWrite(g2,LOW);
+      Serial.println("→ Lane 2: Yellow ON for 2 seconds");
+      digitalWrite(y2,HIGH);
+      delay(2000);
+      digitalWrite(y2,LOW);
+      digitalWrite(r2,HIGH);
+      Serial.println("→ Lane 2: Red ON");
+    }
+  }
+  else if((sd1==0&&sd2==0&&sd3==0)||(sd4==0&&sd5==0&&sd6==0)) {
+    if(sd1==0&&sd2==0&&sd3==0){
+      Serial.println("→ Lane 1: Green ON for 88 seconds");
+      digitalWrite(r1,LOW);
+      digitalWrite(r2,HIGH);
+      digitalWrite(g1,HIGH);
+      delay(88000);
+      digitalWrite(g1,LOW);
+      Serial.println("→ Lane 1: Yellow ON for 2 seconds");
+      digitalWrite(y1,HIGH);
+      delay(2000);
+      digitalWrite(y1,LOW);
+      digitalWrite(r1,HIGH);
+      Serial.println("→ Lane 1: Red ON");
+    }
+    if(sd4==0&&sd5==0&&sd6==0){
+      Serial.println("→ Lane 2: Green ON for 88 seconds");
+      digitalWrite(r2,LOW);
+      digitalWrite(r1,HIGH);
+      digitalWrite(g2,HIGH);
+      delay(88000);
+      digitalWrite(g2,LOW);
+      Serial.println("→ Lane 2: Yellow ON for 2 seconds");
+      digitalWrite(y2,HIGH);
+      delay(2000);
+      digitalWrite(y2,LOW);
+      digitalWrite(r2,HIGH);
+      Serial.println("→ Lane 2: Red ON");
+    }
+  }
+
+  delay(500); // small delay for readability
+}

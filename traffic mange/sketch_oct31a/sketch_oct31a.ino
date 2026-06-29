@@ -1,0 +1,218 @@
+int sens1 = 2;
+int sens2 = 3;
+int sens3 = 4;
+int sens4 = 5;
+int sens5 = 6;
+int sens6 = 7;
+
+int r1 = 24;
+int y1 = 23;
+int g1 = 22;
+int r2 = 27;
+int y2 = 26;
+int g2 = 25;
+
+int sd1, sd2, sd3, sd4, sd5, sd6;
+
+void setup() {
+    Serial.begin(9600);
+    pinMode(sens1, INPUT);
+    pinMode(sens2, INPUT);
+    pinMode(sens3, INPUT);
+    pinMode(sens4, INPUT);
+    pinMode(sens5, INPUT);
+    pinMode(sens6, INPUT);
+
+    pinMode(r1, OUTPUT);
+    pinMode(y1, OUTPUT);
+    pinMode(g1, OUTPUT);
+    pinMode(r2, OUTPUT);
+    pinMode(y2, OUTPUT);
+    pinMode(g2, OUTPUT);
+
+    digitalWrite(r1, HIGH);
+    digitalWrite(r2, HIGH);
+
+    Serial.println("🚦 Traffic Light System Started");
+    Serial.println("-----------------------------------");
+}
+
+void loop() {
+    sd1 = digitalRead(sens1);
+    sd2 = digitalRead(sens2);
+    sd3 = digitalRead(sens3);
+    sd4 = digitalRead(sens4);
+    sd5 = digitalRead(sens5);
+    sd6 = digitalRead(sens6);
+
+    int countLane1 = (sd1 == 0) + (sd2 == 0) + (sd3 == 0);
+    int countLane2 = (sd4 == 0) + (sd5 == 0) + (sd6 == 0);
+
+    Serial.println("-----------------------------------");
+    Serial.print("Lane 1 sensors: ");
+    Serial.print(countLane1);
+    Serial.println(" detected");
+    Serial.print("Lane 2 sensors: ");
+    Serial.print(countLane2);
+    Serial.println(" detected");
+    Serial.println("-----------------------------------");
+
+    
+    if (countLane1 == 0 && countLane2 == 0) {
+        while (true) {
+            sd1 = digitalRead(sens1);
+            sd2 = digitalRead(sens2);
+            sd3 = digitalRead(sens3);
+            sd4 = digitalRead(sens4);
+            sd5 = digitalRead(sens5);
+            sd6 = digitalRead(sens6);
+
+            countLane1 = (sd1 == 0) + (sd2 == 0) + (sd3 == 0);
+            countLane2 = (sd4 == 0) + (sd5 == 0) + (sd6 == 0);
+
+            if (countLane1 > 0 || countLane2 > 0) {
+                break;
+            }
+
+            
+            Serial.println("→ Lane 1: Green ON for 5 seconds 🟢");
+            digitalWrite(r1, LOW);
+            digitalWrite(g1, HIGH);
+            digitalWrite(r2, HIGH);
+            digitalWrite(g2, LOW);
+            delay(5000);
+
+            Serial.println("→ Lane 1: Yellow ON for 2 seconds 🟡");
+            digitalWrite(g1, LOW);
+            digitalWrite(y1, HIGH);
+            delay(2000);
+
+            digitalWrite(y1, LOW);
+            digitalWrite(r1, HIGH);
+            Serial.println("→ Lane 1: Red ON 🔴");
+
+            sd1 = digitalRead(sens1);
+            sd2 = digitalRead(sens2);
+            sd3 = digitalRead(sens3);
+            sd4 = digitalRead(sens4);
+            sd5 = digitalRead(sens5);
+            sd6 = digitalRead(sens6);
+
+            countLane1 = (sd1 == 0) + (sd2 == 0) + (sd3 == 0);
+            countLane2 = (sd4 == 0) + (sd5 == 0) + (sd6 == 0);
+
+            if (countLane1 > 0 || countLane2 > 0) {
+                break;
+            }
+
+            
+            Serial.println("→ Lane 2: Green ON for 5 seconds 🟢");
+            digitalWrite(r2, LOW);
+            digitalWrite(g2, HIGH);
+            digitalWrite(r1, HIGH);
+            digitalWrite(g1, LOW);
+            delay(5000);
+
+            Serial.println("→ Lane 2: Yellow ON for 2 seconds 🟡");
+            digitalWrite(g2, LOW);
+            digitalWrite(y2, HIGH);
+            delay(2000);
+
+            digitalWrite(y2, LOW);
+            digitalWrite(r2, HIGH);
+            Serial.println("→ Lane 2: Red ON 🔴");
+        }
+    }
+
+    
+    if ((sd1 == 0 && sd2 && sd3) || (sd4 == 0 && sd5 && sd6)) {
+        if (sd1 == 0) {
+            Serial.println("→ Lane 1: Green ON for 8 seconds 🟢");
+            digitalWrite(r1, LOW);
+            digitalWrite(r2, HIGH);
+            digitalWrite(g1, HIGH);
+            delay(8000);
+            digitalWrite(g1, LOW);
+            Serial.println("→ Lane 1: Yellow ON for 2 seconds 🟡");
+            digitalWrite(y1, HIGH);
+            delay(2000);
+            digitalWrite(y1, LOW);
+            digitalWrite(r1, HIGH);
+            Serial.println("→ Lane 1: Red ON 🔴");
+        }
+        if (sd4 == 0) {
+            Serial.println("→ Lane 2: Green ON for 8 seconds 🟢");
+            digitalWrite(r2, LOW);
+            digitalWrite(r1, HIGH);
+            digitalWrite(g2, HIGH);
+            delay(8000);
+            digitalWrite(g2, LOW);
+            Serial.println("→ Lane 2: Yellow ON for 2 seconds 🟡");
+            digitalWrite(y2, HIGH);
+            delay(2000);
+            digitalWrite(y2, LOW);
+            digitalWrite(r2, HIGH);
+            Serial.println("→ Lane 2: Red ON 🔴");
+        }
+    } else if ((sd1 == 0 && sd2 == 0 && sd3) || (sd4 == 0 && sd5 == 0 && sd6)) {
+        if (sd1 == 0 && sd2 == 0) {
+            Serial.println("→ Lane 1: Green ON for 18 seconds 🟢");
+            digitalWrite(r1, LOW);
+            digitalWrite(r2, HIGH);
+            digitalWrite(g1, HIGH);
+            delay(18000);
+            digitalWrite(g1, LOW);
+            Serial.println("→ Lane 1: Yellow ON for 2 seconds 🟡");
+            digitalWrite(y1, HIGH);
+            delay(2000);
+            digitalWrite(y1, LOW);
+            digitalWrite(r1, HIGH);
+            Serial.println("→ Lane 1: Red ON 🔴");
+        }
+        if (sd4 == 0 && sd5 == 0) {
+            Serial.println("→ Lane 2: Green ON for 18 seconds 🟢");
+            digitalWrite(r2, LOW);
+            digitalWrite(r1, HIGH);
+            digitalWrite(g2, HIGH);
+            delay(18000);
+            digitalWrite(g2, LOW);
+            Serial.println("→ Lane 2: Yellow ON for 2 seconds 🟡");
+            digitalWrite(y2, HIGH);
+            delay(2000);
+            digitalWrite(y2, LOW);
+            digitalWrite(r2, HIGH);
+            Serial.println("→ Lane 2: Red ON 🔴");
+        }
+    } else if ((sd1 == 0 && sd2 == 0 && sd3 == 0) || (sd4 == 0 && sd5 == 0 && sd6 == 0)) {
+        if (sd1 == 0 && sd2 == 0 && sd3 == 0) {
+            Serial.println("→ Lane 1: Green ON for 28 seconds 🟢");
+            digitalWrite(r1, LOW);
+            digitalWrite(r2, HIGH);
+            digitalWrite(g1, HIGH);
+            delay(28000);
+            digitalWrite(g1, LOW);
+            Serial.println("→ Lane 1: Yellow ON for 2 seconds 🟡");
+            digitalWrite(y1, HIGH);
+            delay(2000);
+            digitalWrite(y1, LOW);
+            digitalWrite(r1, HIGH);
+            Serial.println("→ Lane 1: Red ON 🔴");
+        }
+        if (sd4 == 0 && sd5 == 0 && sd6 == 0) {
+            Serial.println("→ Lane 2: Green ON for 28 seconds 🟢");
+            digitalWrite(r2, LOW);
+            digitalWrite(r1, HIGH);
+            digitalWrite(g2, HIGH);
+            delay(28000);
+            digitalWrite(g2, LOW);
+            Serial.println("→ Lane 2: Yellow ON for 2 seconds 🟡");
+            digitalWrite(y2, HIGH);
+            delay(2000);
+            digitalWrite(y2, LOW);
+            digitalWrite(r2, HIGH);
+            Serial.println("→ Lane 2: Red ON 🔴");
+        }
+    }
+
+    delay(500);
+}
